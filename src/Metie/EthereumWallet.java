@@ -9,9 +9,8 @@ public class EthereumWallet extends Wallet {
     private final String type = "Ethereum";
     Connection connection;
 
-    public EthereumWallet(String adress , double balance){
-        super(adress,balance);
-
+    public EthereumWallet(String address, double balance) {
+        super(address, balance, "Ethereum");
     }
 
     public String getType(){

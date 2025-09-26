@@ -55,7 +55,7 @@ public class MainMenu {
 
         if (bw != null) {
             System.out.println("Ethereum Wallet Created!");
-            System.out.println("Address: " + bw.getadress());
+
             System.out.println("Balance: " + bw.getbalance());
         } else {
             System.out.println("Error creating wallet.");
@@ -68,7 +68,7 @@ public class MainMenu {
 
         if (bw != null) {
             System.out.println("Bitcoin Wallet Created!");
-            System.out.println("Address: " + bw.getadress());
+
             System.out.println("Balance: " + bw.getbalance());
         } else {
             System.out.println("Error creating wallet.");

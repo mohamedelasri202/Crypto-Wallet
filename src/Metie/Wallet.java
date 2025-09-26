@@ -1,29 +1,25 @@
 package Metie;
 
+
+
+
 public abstract class Wallet {
+    protected String address;
+    protected double balance;
+    protected String type; // store wallet type
 
-    private String adress;
-    private double balance ;
-
-    public  Wallet(String adress ,double balance ){
-        this.adress = adress;
+    public Wallet(String address, double balance, String type) {
+        this.address = address;
         this.balance = balance;
-
+        this.type = type;
     }
 
-    public String  getadress(){
-        return adress;
-    }
-    public void setadress(String adress){
-        this.adress = adress;
+    public String getType() {
+        return type;
     }
 
-    public double getbalance(){
+    public double getbalance() {
         return balance;
     }
-    public void setbalance(double balance){
-        this.balance= balance;
-    }
-
-
 }
+

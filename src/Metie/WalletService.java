@@ -25,8 +25,7 @@ public class WalletService {
                 String sql = "INSERT INTO wallet (type, address, amount) VALUES (?, ?, ?)";
                 PreparedStatement stmt = connection.prepareStatement(sql);
                 stmt.setString(1, bw.getType());
-                stmt.setString(2, bw.getadress());
-                stmt.setDouble(3, bw.getbalance());
+                stmt.setDouble(2, bw.getbalance());
 
                 stmt.executeUpdate();
 
@@ -38,8 +37,7 @@ public class WalletService {
                 String sql = "INSERT INTO wallet (type, address, amount) VALUES (?, ?, ?)";
                 PreparedStatement stmt = connection.prepareStatement(sql);
                 stmt.setString(1, ew.getType());
-                stmt.setString(2, ew.getadress());
-                stmt.setDouble(3, ew.getbalance());
+                stmt.setDouble(2, ew.getbalance());
 
                 stmt.executeUpdate();
 
@@ -63,6 +61,8 @@ public class WalletService {
             return "error: wallet not found";
         }
 
+        if()
+
         // 2. Check balance
         EthereumFees ethFees = new EthereumFees();
         double fee = ethFees.calulatefees(amount, type); // fees
@@ -73,10 +73,10 @@ public class WalletService {
         }
 
         try {
-            // 3. Start DB transaction
+
             connection.setAutoCommit(false);
 
-            // 4. Insert transaction record
+
             String insertTransactionSQL = "INSERT INTO transactions (transaction_id, sender_address, receiver_address, amount, fees, status) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement stmt = connection.prepareStatement(insertTransactionSQL)) {
                 stmt.setString(1, UUID.randomUUID().toString());
@@ -88,7 +88,7 @@ public class WalletService {
                 stmt.executeUpdate();
             }
 
-            // 5. Update sender balance
+
             String updateSenderSQL = "UPDATE wallet SET amount = amount - ? WHERE address = ?";
             try (PreparedStatement stmt = connection.prepareStatement(updateSenderSQL)) {
                 stmt.setDouble(1, totalDebit);
@@ -96,7 +96,7 @@ public class WalletService {
                 stmt.executeUpdate();
             }
 
-            // 6. Update receiver balance
+
             String updateReceiverSQL = "UPDATE wallet SET amount = amount + ? WHERE address = ?";
             try (PreparedStatement stmt = connection.prepareStatement(updateReceiverSQL)) {
                 stmt.setDouble(1, amount);
@@ -140,7 +140,6 @@ public class WalletService {
                     String walletType = rs.getString("type");
                     double balance = rs.getDouble("amount");
 
-                    // Instantiate the correct subclass based on type
                     if ("Ethereum".equalsIgnoreCase(walletType)) {
                         wallet = new EthereumWallet(walletAddress, balance);
                     } else if ("Bitcoin".equalsIgnoreCase(walletType)) {
@@ -154,6 +153,7 @@ public class WalletService {
 
         return wallet;
     }
+
 
 
 
