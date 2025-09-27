@@ -21,11 +21,60 @@ public class Transaction {
 
     }
 
+    public String getTransaction_id() {
+        return transaction_id;
+    }
 
+    public String getSender_address() {
+        return sender_address;
+    }
 
+    public String getReseiver_address() {
+        return reseiver_address;
+    }
 
+    public double getAmount() {
+        return amount;
+    }
 
+    public double getFees() {
+        return fees;
+    }
 
+    public String getStatus() {
+        return status;
+    }
 
+    public LocalDateTime getCreation_date() {
+        return creation_date;
+    }
+
+    public void setTransaction_id(String transaction_id) {
+        this.transaction_id = transaction_id;
+    }
+
+    public void setSender_address(String sender_address) {
+        this.sender_address = sender_address;
+    }
+
+    public void setReseiver_address(String reseiver_address) {
+        this.reseiver_address = reseiver_address;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setFees(double fees) {
+        this.fees = fees;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setCreation_date(LocalDateTime creation_date) {
+        this.creation_date = creation_date;
+    }
 }
 
