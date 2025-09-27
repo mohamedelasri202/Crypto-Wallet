@@ -1,34 +1,26 @@
 package Metie;
+import Utilitaire.Priority;
 
 public class EthereumFees implements Fees{
 
 
-
  @Override
-    public double calulatefees(double amount,String type) {
-        double transactionSize ;
-        double fee_rate;
-        if(amount <0.01){
-            transactionSize = 250;
+ public double calulatefees(double amount,String type) {
+     double gasused ;
+     double Gasprice;
+     gasused = 21000 +(amount * 10);
 
-        } else if (amount<1) {
-            transactionSize = 300;
-            
-        }else {
-            transactionSize = 400;
-        }
-        if(type =="ECONOMIQUE"){
-            fee_rate = 5;
-        } else if (type == "STANDARD") {
-            fee_rate = 20;
+     if(type.equals(Priority.ECONOMIQUE.displayName())){
+         Gasprice  = 10;
+     }else if(type.equals(Priority.STANDARD.displayName()) ) {
+         Gasprice = 30;
+     }else {
+         Gasprice =100;
+     }
+     double feeETH = gasused * Gasprice * Math.pow(10, -9);
 
-        }else {
-            fee_rate =50;
-        }
-        double fee_satoshis = transactionSize*fee_rate;
-        double bitocin_fee = fee_satoshis/100_000_000;
+     return  feeETH;
 
-        return  bitocin_fee;
+ }
 
-    }
 }
