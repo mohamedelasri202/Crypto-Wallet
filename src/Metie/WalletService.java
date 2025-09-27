@@ -54,6 +54,8 @@ public class WalletService {
 
     public String doTransaction(String resAddress, String senAddress, double amount, String type) {
         // 1. Find wallets in memory (optional, for checks)
+        double totalDebit;
+        double fee;
         Wallet sender = findByAddress(senAddress);
         Wallet receiver = findByAddress(resAddress);
 
@@ -61,12 +63,16 @@ public class WalletService {
             return "error: wallet not found";
         }
 
-        if()
-
-        // 2. Check balance
-        EthereumFees ethFees = new EthereumFees();
-        double fee = ethFees.calulatefees(amount, type); // fees
-        double totalDebit = amount + fee;
+       String wallettype =  sender.getType();
+        if(wallettype.equals("Ethereum") ){
+            EthereumFees ethfees = new EthereumFees();
+             fee = ethfees.calulatefees(amount, type); // fees
+             totalDebit = amount + fee;
+        }else{
+            BitcoinFees bitcoinfees = new BitcoinFees();
+            fee =  bitcoinfees.calulatefees(amount, type);
+            totalDebit = amount + fee;
+        }
 
         if (sender.getbalance() < totalDebit) {
             return "error: insufficient funds (amount + fee)";
