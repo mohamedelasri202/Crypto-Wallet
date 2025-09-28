@@ -21,5 +21,8 @@ public abstract class Wallet {
     public double getbalance() {
         return balance;
     }
+    public String getaddress() {
+        return address;
+    }
 }
 

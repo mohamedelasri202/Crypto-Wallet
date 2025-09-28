@@ -51,6 +51,7 @@ public class MainMenu {
 
     public static void createEthereumWallet() {
         String type = "ethereum";
+
         Wallet bw = service.createWallet(type);
 
         if (bw != null) {
@@ -108,7 +109,7 @@ public class MainMenu {
             default: System.out.println("Invalid choice");
         }
 
-        service.doTransaction(resaddress, senaddress, amount, type);
+        System.out.println(service.doTransaction(resaddress, senaddress, amount, type));
         System.out.println("Transaction sent successfully!");
     }
 

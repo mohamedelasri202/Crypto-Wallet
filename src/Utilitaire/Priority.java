@@ -1,9 +1,9 @@
 package Utilitaire;
 
 public enum Priority {
-    ECONOMIQUE("Economique"),
-    STANDARD("Standard"),
-    RAPIDE("Rapide");
+    ECONOMICAL("ECONOMICAL"),
+    STANDARD("STANDARD"),
+    RAPIDE("FAST");
 
     private final String displayName;
 

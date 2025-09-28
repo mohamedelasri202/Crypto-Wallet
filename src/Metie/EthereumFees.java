@@ -10,7 +10,7 @@ public class EthereumFees implements Fees{
      double Gasprice;
      gasused = 21000 +(amount * 10);
 
-     if(type.equals(Priority.ECONOMIQUE.displayName())){
+     if(type.equals(Priority.ECONOMICAL.displayName())){
          Gasprice  = 10;
      }else if(type.equals(Priority.STANDARD.displayName()) ) {
          Gasprice = 30;

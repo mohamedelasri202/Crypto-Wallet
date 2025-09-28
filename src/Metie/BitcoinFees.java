@@ -16,7 +16,7 @@ public class BitcoinFees implements  Fees{
         }else {
             transactionSize = 400;
         }
-        if(type.equals(Priority.ECONOMIQUE.displayName())){
+        if(type.equals(Priority.ECONOMICAL.displayName())){
             fee_rate = 5;
         } else if (type.equals(Priority.STANDARD.displayName())) {
             fee_rate = 20;

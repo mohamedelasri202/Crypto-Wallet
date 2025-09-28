@@ -11,14 +11,17 @@ public class WalletService {
     Connection connection;
     MempoolService mempoolService;
 
+
     public WalletService() {
         this.connection = ConnectionDatabase.getInstance().getConnection();
         this.mempoolService = new MempoolService();
     }
 
     public Wallet createWallet(String type) {
+        Wallet wallet = null;
+
         try {
-            if (type.equals("Bitcoin")) {
+            if (type.equals("bitcoin")) {
 
                 String address = AddressGenerator.bitcoinAdress();
 
@@ -27,24 +30,26 @@ public class WalletService {
                 String sql = "INSERT INTO wallet (type, address, amount) VALUES (?, ?, ?)";
                 PreparedStatement stmt = connection.prepareStatement(sql);
                 stmt.setString(1, bw.getType());
-                stmt.setDouble(2, bw.getbalance());
+                stmt.setString(2, bw.getaddress());
+                stmt.setDouble(3, bw.getbalance());
 
                 stmt.executeUpdate();
 
 
-                return bw;
-            }else{
+                wallet = bw;
+            }else if (type.equals("ethereum")) {
+
                 String address = AddressGenerator.ethereumAddress();
                 EthereumWallet ew  = new EthereumWallet(address, 0.0);
                 String sql = "INSERT INTO wallet (type, address, amount) VALUES (?, ?, ?)";
                 PreparedStatement stmt = connection.prepareStatement(sql);
                 stmt.setString(1, ew.getType());
-                stmt.setDouble(2, ew.getbalance());
-
+                stmt.setString(2, ew.getaddress());
+                stmt.setDouble(3, ew.getbalance());
                 stmt.executeUpdate();
 
 
-                return ew;
+                wallet= ew;
             }
 
         } catch (SQLException e) {
@@ -52,12 +57,14 @@ public class WalletService {
             return null;
         }
 
+        return wallet;
+
     }
 
     public String doTransaction(String resAddress, String senAddress, double amount, String type) {
-        // 1. Find wallets in memory (optional, for checks)
         double totalDebit;
         double fee;
+
         Wallet sender = findByAddress(senAddress);
         Wallet receiver = findByAddress(resAddress);
 
@@ -65,38 +72,40 @@ public class WalletService {
             return "error: wallet not found";
         }
 
-       String wallettype =  sender.getType();
-        if(wallettype.equals("Ethereum") ){
-            EthereumFees ethfees = new EthereumFees();
-             fee = ethfees.calulatefees(amount, type); // fees
-             totalDebit = amount + fee;
-        }else{
-            BitcoinFees bitcoinfees = new BitcoinFees();
-            fee =  bitcoinfees.calulatefees(amount, type);
-            totalDebit = amount + fee;
+        String walletType = sender.getType();
+        if (walletType.equals("ethereum")) {
+            EthereumFees ethFees = new EthereumFees();
+            fee = ethFees.calulatefees(amount, type);
+        } else {
+            BitcoinFees btcFees = new BitcoinFees();
+            fee = btcFees.calulatefees(amount, type);
         }
+        totalDebit = amount + fee;
 
         if (sender.getbalance() < totalDebit) {
             return "error: insufficient funds (amount + fee)";
         }
 
-        try {
+        String transactionId = UUID.randomUUID().toString();
 
+        try {
+            // Disable auto-commit for manual control
             connection.setAutoCommit(false);
 
-
+            // 2. Insert transaction into DB
             String insertTransactionSQL = "INSERT INTO transactions (transaction_id, sender_address, receiver_address, amount, fees, status) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement stmt = connection.prepareStatement(insertTransactionSQL)) {
-                stmt.setString(1, UUID.randomUUID().toString());
+                stmt.setString(1, transactionId);
                 stmt.setString(2, senAddress);
                 stmt.setString(3, resAddress);
                 stmt.setDouble(4, amount);
                 stmt.setDouble(5, fee);
-                stmt.setString(6, "pending");
+                stmt.setString(6, "PENDING");
                 stmt.executeUpdate();
             }
+            System.out.println(sender.getbalance());
 
-
+            // 3. Update sender balance
             String updateSenderSQL = "UPDATE wallet SET amount = amount - ? WHERE address = ?";
             try (PreparedStatement stmt = connection.prepareStatement(updateSenderSQL)) {
                 stmt.setDouble(1, totalDebit);
@@ -104,22 +113,33 @@ public class WalletService {
                 stmt.executeUpdate();
             }
 
-
+            // 4. Update receiver balance
             String updateReceiverSQL = "UPDATE wallet SET amount = amount + ? WHERE address = ?";
             try (PreparedStatement stmt = connection.prepareStatement(updateReceiverSQL)) {
                 stmt.setDouble(1, amount);
                 stmt.setString(2, resAddress);
                 stmt.executeUpdate();
-            }
 
-            // 7. Commit DB transaction
+            }
             connection.commit();
             connection.setAutoCommit(true);
+            System.out.println("ikhan");
 
-            return "transaction created";
+            Transaction tx = new Transaction(
+                    transactionId,
+                    senAddress,
+                    resAddress,
+                    amount,
+                    fee,
+                    "PENDING"
+            );
+
+            mempoolService.addtransactions(tx);
+
+
+            return "transaction created with ID: " + transactionId;
 
         } catch (SQLException e) {
-            // Rollback if anything goes wrong
             try {
                 connection.rollback();
                 connection.setAutoCommit(true);
@@ -130,6 +150,7 @@ public class WalletService {
             return "error: transaction failed";
         }
     }
+
 
 
 

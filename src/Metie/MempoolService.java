@@ -11,5 +11,11 @@ public class MempoolService {
 
     public  void addtransactions(Transaction tx){
         pendingtransactions.add(tx);
+        sortByFees();
+
     }
+    private void sortByFees(){
+        pendingtransactions.sort((a,b)->Double.compare(a.getFees(),b.getFees()));
+    }
+
 }
