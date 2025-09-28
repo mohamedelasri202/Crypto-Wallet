@@ -9,9 +9,11 @@ import java.util.UUID;
 
 public class WalletService {
     Connection connection;
+    MempoolService mempoolService;
 
     public WalletService() {
         this.connection = ConnectionDatabase.getInstance().getConnection();
+        this.mempoolService = new MempoolService();
     }
 
     public Wallet createWallet(String type) {

@@ -8,4 +8,8 @@ public class MempoolService {
     public MempoolService() {
         pendingtransactions = new ArrayList<>();
     }
+
+    public  void addtransactions(Transaction tx){
+        pendingtransactions.add(tx);
+    }
 }
