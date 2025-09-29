@@ -2,10 +2,10 @@ package Metie;
 
 public class BitcoinWallet extends Wallet {
 
-    private final String type = "Bitcoin";
+    private final String type = "bitcoin";
 
     public BitcoinWallet(String address, double balance) {
-        super(address, balance, "Bitcoin");
+        super(address, balance, "bitcoin");
     }
 
     public String getType() {

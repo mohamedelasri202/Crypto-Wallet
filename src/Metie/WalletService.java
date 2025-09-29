@@ -123,7 +123,7 @@ public class WalletService {
             }
             connection.commit();
             connection.setAutoCommit(true);
-            System.out.println("ikhan");
+
 
             Transaction tx = new Transaction(
                     transactionId,

@@ -3,7 +3,7 @@ package Utilitaire;
 public enum Priority {
     ECONOMICAL("ECONOMICAL"),
     STANDARD("STANDARD"),
-    RAPIDE("FAST");
+    FAST("FAST");
 
     private final String displayName;
 

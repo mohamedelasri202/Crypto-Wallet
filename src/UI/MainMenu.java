@@ -1,15 +1,13 @@
 package UI;
 
-import Metie.EthereumWallet;
-import Metie.Wallet;
-import Metie.WalletService;
-import Metie.BitcoinWallet;
+import Metie.*;
 import Utilitaire.*;
 import java.util.Scanner;
 
 public class MainMenu {
 
     private static WalletService service = new WalletService();
+    private static MempoolService mempoolService = new MempoolService();
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -113,7 +111,18 @@ public class MainMenu {
         System.out.println("Transaction sent successfully!");
     }
 
-    public static void positionInMempoo() {}
+    public static void positionInMempoo() {
+        System.out.println("Please enter your transaction ID:");
+        String transactionID = scanner.nextLine();
+
+        int position = mempoolService.getpostioninmempool(transactionID);
+        if (position == -1) {
+            System.out.println("Transaction not found in mempool.");
+        } else {
+            System.out.println("Your position in the mempool is: " + position);
+        }
+
+    }
 
     public static void comparaisonFees() {}
 

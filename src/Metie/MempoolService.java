@@ -3,9 +3,10 @@ import java.util.*;
 
 public class MempoolService {
 
-    private List<Transaction>pendingtransactions;
+    final private List<Transaction>pendingtransactions;
 
     public MempoolService() {
+
         pendingtransactions = new ArrayList<>();
     }
 
@@ -15,7 +16,25 @@ public class MempoolService {
 
     }
     private void sortByFees(){
-        pendingtransactions.sort((a,b)->Double.compare(a.getFees(),b.getFees()));
+
+        pendingtransactions.sort((b,a)-> {
+            int feecompare = Double.compare(b.getFees(), a.getFees());
+            if (feecompare != 0) {
+                return feecompare;
+            }else {
+                return b.getCreation_date().compareTo(a.getCreation_date());
+            }
+        });
+
+    }
+    public int getpostioninmempool(String transactinId){
+        for(int i =0;i <pendingtransactions.size();i++){
+           if(pendingtransactions.get(i).getTransaction_id().equals(transactinId));
+           return i+1;
+
+        }
+        return -1;
+
     }
 
 }
