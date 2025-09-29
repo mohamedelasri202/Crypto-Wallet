@@ -5,9 +5,9 @@ import Utilitaire.*;
 import java.util.Scanner;
 
 public class MainMenu {
-
-    private static WalletService service = new WalletService();
     private static MempoolService mempoolService = new MempoolService();
+    private static WalletService service = new WalletService(mempoolService);
+
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -115,7 +115,7 @@ public class MainMenu {
         System.out.println("Please enter your transaction ID:");
         String transactionID = scanner.nextLine();
 
-        int position = mempoolService.getpostioninmempool(transactionID);
+        int position = mempoolService.getPositionInMempool(transactionID);
         if (position == -1) {
             System.out.println("Transaction not found in mempool.");
         } else {

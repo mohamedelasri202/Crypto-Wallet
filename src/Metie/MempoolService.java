@@ -3,38 +3,36 @@ import java.util.*;
 
 public class MempoolService {
 
-    final private List<Transaction>pendingtransactions;
+    private final List<Transaction> pendingtransactions;
 
     public MempoolService() {
-
         pendingtransactions = new ArrayList<>();
     }
 
-    public  void addtransactions(Transaction tx){
+    public void addTransaction(Transaction tx) {
         pendingtransactions.add(tx);
         sortByFees();
-
     }
-    private void sortByFees(){
 
-        pendingtransactions.sort((b,a)-> {
-            int feecompare = Double.compare(b.getFees(), a.getFees());
-            if (feecompare != 0) {
-                return feecompare;
-            }else {
-                return b.getCreation_date().compareTo(a.getCreation_date());
-            }
+    private void sortByFees() {
+        pendingtransactions.sort((a, b) -> {
+            int feeCompare = Double.compare(b.getFees(), a.getFees()); // highest fee first
+            if (feeCompare != 0) return feeCompare;
+            return a.getCreation_date().compareTo(b.getCreation_date()); // earliest first
         });
-
     }
-    public int getpostioninmempool(String transactinId){
-        for(int i =0;i <pendingtransactions.size();i++){
-           if(pendingtransactions.get(i).getTransaction_id().equals(transactinId));
-           return i+1;
 
+    public int getPositionInMempool(String transactionId) {
+        for (int i = 0; i < pendingtransactions.size(); i++) {
+            if (pendingtransactions.get(i).getTransaction_id().equals(transactionId)) {
+                return i + 1;
+            }
         }
         return -1;
-
     }
 
+
+    public List<Transaction> getPendingTransactions() {
+        return pendingtransactions;
+    }
 }

@@ -9,12 +9,12 @@ import java.util.UUID;
 
 public class WalletService {
     Connection connection;
-    MempoolService mempoolService;
+    private final MempoolService mempoolService;
 
 
-    public WalletService() {
+    public WalletService(MempoolService mempoolService) {
         this.connection = ConnectionDatabase.getInstance().getConnection();
-        this.mempoolService = new MempoolService();
+        this.mempoolService = mempoolService;
     }
 
     public Wallet createWallet(String type) {
@@ -134,7 +134,7 @@ public class WalletService {
                     "PENDING"
             );
 
-            mempoolService.addtransactions(tx);
+            mempoolService.addTransaction(tx);
 
 
             return "transaction created with ID: " + transactionId;
