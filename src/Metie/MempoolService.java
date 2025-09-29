@@ -16,9 +16,9 @@ public class MempoolService {
 
     private void sortByFees() {
         pendingtransactions.sort((a, b) -> {
-            int feeCompare = Double.compare(b.getFees(), a.getFees()); // highest fee first
+            int feeCompare = Double.compare(b.getFees(), a.getFees());
             if (feeCompare != 0) return feeCompare;
-            return a.getCreation_date().compareTo(b.getCreation_date()); // earliest first
+            return a.getCreation_date().compareTo(b.getCreation_date());
         });
     }
 
@@ -35,4 +35,22 @@ public class MempoolService {
     public List<Transaction> getPendingTransactions() {
         return pendingtransactions;
     }
-}
+
+
+        public void processBlock(int blockSize) {
+            blockSize = 10;
+            int count = Math.min(blockSize, pendingtransactions.size());
+            for (int i = 0; i < count; i++) {
+                Transaction tx = pendingtransactions.get(i);
+                tx.setStatus("CONFIRMED");
+                // Optionally update DB
+            }
+            pendingtransactions.removeIf(tx -> tx.getStatus().equals("CONFIRMED"));
+        }
+
+        public int estimatedtime(String transactionID){
+
+        }
+
+    }
+
