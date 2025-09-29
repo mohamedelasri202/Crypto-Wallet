@@ -121,6 +121,10 @@ public class MainMenu {
         } else {
             System.out.println("Your position in the mempool is: " + position);
         }
+        System.out.println("It's estimated to get confirmed in "
+                + mempoolService.estimatedtime(transactionID)
+                + " minutes.");
+
 
     }
 

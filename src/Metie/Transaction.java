@@ -1,5 +1,8 @@
 package Metie;
+import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Transaction {
     private  String   transaction_id;
@@ -76,5 +79,19 @@ public class Transaction {
     public void setCreation_date(LocalDateTime creation_date) {
         this.creation_date = creation_date;
     }
+    public void confirmTransactions() {
+        Timer timer = new Timer(true); // daemon thread
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                int blockSize = 10;
+                if (!MempoolService.getPendingTransactions().isEmpty()) {
+                    mempoolService.processBlock(blockSize);
+                    System.out.println("Automatic block mined: top " + blockSize + " transactions confirmed.");
+                }
+            }
+        }, 0, 60000); // run immediately, then every 60 seconds
+    }
+
 }
 
