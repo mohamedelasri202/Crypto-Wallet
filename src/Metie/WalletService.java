@@ -15,6 +15,8 @@ public class WalletService {
     public WalletService(MempoolService mempoolService) {
         this.connection = ConnectionDatabase.getInstance().getConnection();
         this.mempoolService = mempoolService;
+        Autoconfirmation auto = new Autoconfirmation(this.mempoolService);
+        auto.autoconfirmation();
     }
 
     public Wallet createWallet(String type) {
