@@ -2,6 +2,7 @@ package Metie;
 import Utilitaire.ConnectionDatabase;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.*;
@@ -70,9 +71,39 @@ public class MempoolService {
             return  timeEsstimated;
 
         }
+    public void removeTransaction(Transaction tx) {
+        pendingtransactions.remove(tx);
+    }
 
     public List<Transaction> getPendingtransactions() {
         return pendingtransactions;
+    }
+
+
+    public List<Map<String, Object>> pendingTransactions() {
+        List<Map<String, Object>> transactions = new ArrayList<>();
+
+        String sql = "SELECT transaction_id, fees " +
+                "FROM transactions " +
+                "WHERE status = 'PENDING' " +
+                "ORDER BY fees DESC, creation_date ASC";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                row.put("transaction_id", rs.getString("transaction_id"));
+                row.put("fees", rs.getDouble("fees"));
+
+                transactions.add(row);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return transactions;
     }
 }
 

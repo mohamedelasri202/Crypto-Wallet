@@ -15,8 +15,6 @@ public class WalletService {
     public WalletService(MempoolService mempoolService) {
         this.connection = ConnectionDatabase.getInstance().getConnection();
         this.mempoolService = mempoolService;
-        Autoconfirmation auto = new Autoconfirmation(this.mempoolService);
-        auto.autoconfirmation();
     }
 
     public Wallet createWallet(String type) {
@@ -137,6 +135,9 @@ public class WalletService {
             );
 
             mempoolService.addTransaction(tx);
+            Autoconfirmation auto = new Autoconfirmation(mempoolService);
+            auto.autoConfirmTransaction(tx);
+
 
 
             return "transaction created with ID: " + transactionId;

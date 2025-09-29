@@ -2,6 +2,9 @@ package UI;
 
 import Metie.*;
 import Utilitaire.*;
+
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class MainMenu {
@@ -130,7 +133,22 @@ public class MainMenu {
 
     public static void comparaisonFees() {}
 
-    public static void consulteEtatMempool() {}
+    public static void consulteEtatMempool() {
+        List<Map<String, Object>> pending = mempoolService.pendingTransactions();
+
+        // Print table header
+        System.out.printf("%-40s | %-15s%n", "Address", "Fees");
+        System.out.println("----------------------------------------------------");
+
+        for (Map<String, Object> row : pending) {
+            String address = (String) row.get("transaction_id");
+            double fees = (Double) row.get("fees");
+
+            System.out.printf("%-40s | %-15.8f%n", address, fees);
+        }
+    }
+
+
 
 
 

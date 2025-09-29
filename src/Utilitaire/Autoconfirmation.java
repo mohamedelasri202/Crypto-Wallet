@@ -4,6 +4,8 @@ import java.util.Timer;
 
 import java.util.TimerTask;
 import Metie.MempoolService;
+import Metie.Transaction;
+
 
 public class Autoconfirmation {
     private final MempoolService mempoolService;
@@ -12,17 +14,21 @@ public class Autoconfirmation {
         this.mempoolService = mempoolService;
     }
 
-    public void autoconfirmation() {
+    public void autoConfirmTransaction(Transaction tx) {
+        int estimatedTimeMinutes = mempoolService.estimatedtime(tx.getTransaction_id());
+        long delayMillis = estimatedTimeMinutes * 60 * 1000L;
+
         Timer timer = new Timer(true);
-        timer.scheduleAtFixedRate(new TimerTask() {
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                int blocksize = 10;
-                if (!mempoolService.getPendingTransactions().isEmpty()) {
-                    mempoolService.processBlock(blocksize);
-                    System.out.println("Automatic block mined: top " + blocksize + " transactions confirmed.");
-                }
+                tx.setStatus("CONFIRMED");
+                mempoolService.removeTransaction(tx);
+                System.out.println("Transaction " + tx.getTransaction_id() +
+                        " confirmed automatically after " + estimatedTimeMinutes + " minutes.");
             }
-        }, 0, 60000); // every 60 seconds
+        }, delayMillis);
     }
 }
+
+
