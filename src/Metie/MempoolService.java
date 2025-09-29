@@ -105,5 +105,8 @@ public class MempoolService {
 
         return transactions;
     }
+    public Connection getConnection() {
+        return this.connection;
+    }
 }
 
