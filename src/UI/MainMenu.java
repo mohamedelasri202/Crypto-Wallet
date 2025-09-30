@@ -19,10 +19,7 @@ public class MainMenu {
 
     public static void main(String[] args) {
 
-
         log.setLevel(Level.ALL);
-
-        // Add console handler and set its level
         ConsoleHandler handler = new ConsoleHandler();
         handler.setLevel(Level.ALL);
         log.addHandler(handler);
@@ -143,12 +140,36 @@ public class MainMenu {
 
     }
 
-    public static void comparaisonFees() {}
+    public static void comparaisonFees() {
+        // 1. Get the data from WalletService
+        List<Map<String, Object>> data = service.getFeeComparisonData();
+
+        if (data.isEmpty()) {
+            System.out.println("No transactions in the mempool to compare.");
+            return;
+        }
+
+        // 2. Print the ASCII table
+        System.out.println("+------------+------------+------------+------------+");
+        System.out.println("| Fee Level  | Fee Amount | Position   | Est. Time  |");
+        System.out.println("+------------+------------+------------+------------+");
+
+        for (Map<String, Object> row : data) {
+            System.out.printf("| %-10s | %10.5f | %10d | %10d |\n",
+                    row.get("priority"),
+                    row.get("fee"),
+                    row.get("position"),
+                    row.get("estimatedTime"));
+        }
+
+        System.out.println("+------------+------------+------------+------------+");
+    }
+
 
     public static void consulteEtatMempool() {
         List<Map<String, Object>> pending = mempoolService.pendingTransactions();
 
-        // Print table header
+
         System.out.printf("%-40s | %-15s%n", "Address", "Fees");
         System.out.println("----------------------------------------------------");
 

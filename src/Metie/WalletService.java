@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
+import java.util.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -115,7 +115,7 @@ public class WalletService {
                 stmt.setDouble(4, amount);
                 stmt.setDouble(5, fee);
                 stmt.setString(6, "PENDING");
-                stmt.setString(7, priority.name()); // store priority
+                stmt.setString(7, priority.name());
                 stmt.executeUpdate();
             }
 
@@ -201,6 +201,24 @@ public class WalletService {
         return wallet;
     }
 
+
+    public List<Map<String, Object>> getFeeComparisonData() {
+        List<Map<String, Object>> tableData = new ArrayList<>();
+
+
+        for (Transaction tx : mempoolService.getPendingTransactions()) {
+            Map<String, Object> row = new HashMap<>();
+
+            row.put("priority", tx.getPriority().name());
+            row.put("fee", tx.getFees());
+            row.put("position", mempoolService.getPositionInMempool(tx.getTransaction_id())); // Position
+            row.put("estimatedTime", mempoolService.estimatedtime(tx.getTransaction_id()));   // Est. Time
+
+            tableData.add(row);
+        }
+
+        return tableData;
+    }
 
 
 
