@@ -75,13 +75,13 @@ L’objectif est d’aider les utilisateurs à comprendre le rôle des frais dan
 
 
 ### Exemple : Création de wallet
-![Diagramme UML](https://raw.githubusercontent.com/mohamedelasri202/Crypto-Wallet/main/Screenshot 2025-09-30 204211.png)
+![Diagramme UML](https://raw.githubusercontent.com/mohamedelasri202/Crypto-Wallet/main/Screenshot%202025-09-30%20204413.png)
 
 ### Exemple : Comparaison des frais
-![Diagramme UML](https://raw.githubusercontent.com/mohamedelasri202/Crypto-Wallet/main/Screenshot 2025-09-30 204337.png)
+![Diagramme UML](https://raw.githubusercontent.com/mohamedelasri202/Crypto-Wallet/main/Screenshot%202025-09-30%20204337.png)
 
 ### Exemple : État du mempool
-![Diagramme UML](https://raw.githubusercontent.com/mohamedelasri202/Crypto-Wallet/main/Screenshot 2025-09-30 204413.png)
+![Diagramme UML](https://raw.githubusercontent.com/mohamedelasri202/Crypto-Wallet/main/Screenshot%202025-09-30%20204211.png)
 
 ---
 
@@ -90,6 +90,7 @@ L’objectif est d’aider les utilisateurs à comprendre le rôle des frais dan
 - Java 8 (obligatoire, pas de version supérieure)
 - PostgreSQL installé et configuré
 - Git
+
 
 
 
