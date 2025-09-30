@@ -76,7 +76,7 @@ public class WalletService {
             return "error: wallet not found";
         }
 
-        // Convert user input to Priority enum
+
         Priority priority;
         try {
             priority = Priority.valueOf(type.toUpperCase());
@@ -84,7 +84,7 @@ public class WalletService {
             return "error: invalid priority type";
         }
 
-        // Calculate fees based on wallet type and priority
+
         String walletType = sender.getType();
         if (walletType.equals("ethereum")) {
             EthereumFees ethFees = new EthereumFees();
@@ -103,10 +103,10 @@ public class WalletService {
         String transactionId = UUID.randomUUID().toString();
 
         try {
-            // Disable auto-commit for manual control
+
             connection.setAutoCommit(false);
 
-            // 1. Insert transaction into DB
+
             String insertTransactionSQL = "INSERT INTO transactions (transaction_id, sender_address, receiver_address, amount, fees, status, priority) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement stmt = connection.prepareStatement(insertTransactionSQL)) {
                 stmt.setString(1, transactionId);
@@ -138,7 +138,7 @@ public class WalletService {
             connection.commit();
             connection.setAutoCommit(true);
 
-            // 4. Create transaction object with priority
+
             Transaction tx = new Transaction(
                     transactionId,
                     senAddress,
@@ -149,7 +149,7 @@ public class WalletService {
                     priority
             );
 
-            // 5. Add to mempool
+
             mempoolService.addTransaction(tx);
 
 
@@ -172,7 +172,7 @@ public class WalletService {
 
 
 
-//    methode for the cheecking using the address in the database
+
 
     public Wallet findByAddress(String address) {
         Wallet wallet = null;

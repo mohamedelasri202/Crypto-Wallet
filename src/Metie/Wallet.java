@@ -6,7 +6,7 @@ package Metie;
 public abstract class Wallet {
     protected String address;
     protected double balance;
-    protected String type; // store wallet type
+    protected String type;
 
     public Wallet(String address, double balance, String type) {
         this.address = address;
