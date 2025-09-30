@@ -6,13 +6,16 @@ import java.sql.SQLException;
 import java.util.Timer;
 
 import java.util.TimerTask;
+import java.util.logging.Logger;
+
 import Metie.MempoolService;
 import Metie.Transaction;
 
 
 public class Autoconfirmation {
     private final MempoolService mempoolService;
-
+/* loggs; */
+    private final Logger logger = Logger.getLogger(Autoconfirmation.class.getName());
 
     public Autoconfirmation(MempoolService mempoolService) {
         this.mempoolService = mempoolService;
@@ -29,17 +32,18 @@ public class Autoconfirmation {
                 tx.setStatus("CONFIRMED");
                 mempoolService.removeTransaction(tx);
 
-                // UPDATE DB
+
                 String updateSQL = "UPDATE transactions SET status = 'CONFIRMED' WHERE transaction_id = ?";
                 try (PreparedStatement stmt = mempoolService.getConnection().prepareStatement(updateSQL)) {
                     stmt.setString(1, tx.getTransaction_id());
-                    stmt.executeUpdate();
+
+                    int rows = stmt.executeUpdate();
+                    logger.info("Updated transaction " + tx.getTransaction_id() + ". Rows affected: " + rows);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+            logger.info("transaction "+ tx.getTransaction_id()+ " confirmed"+estimatedTimeMinutes +"minutes");
 
-                System.out.println("Transaction " + tx.getTransaction_id() +
-                        " confirmed automatically after " + estimatedTimeMinutes + " minutes.");
             }
 
         }, delayMillis);

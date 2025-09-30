@@ -1,8 +1,10 @@
 package Metie;
 import Utilitaire.Priority;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class EthereumFees implements Fees{
-
+   private final static Logger loger =Logger.getLogger(EthereumFees.class.getName());
 
  @Override
  public double calulatefees(double amount,String type) {
@@ -19,6 +21,7 @@ public class EthereumFees implements Fees{
          Gasprice = 100;
      } else {
          throw new IllegalArgumentException("Invalid priority type: " + type);
+
      }
 
      double feeETH = gasused * Gasprice * Math.pow(10, -9);

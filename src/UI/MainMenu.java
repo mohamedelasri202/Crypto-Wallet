@@ -6,10 +6,12 @@ import Utilitaire.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class MainMenu {
     private static MempoolService mempoolService = new MempoolService();
     private static WalletService service = new WalletService(mempoolService);
+    private static final Logger log =Logger.getLogger(MainMenu.class.getName());
 
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -28,12 +30,12 @@ public class MainMenu {
                     case "5": comparaisonFees(); break;
                     case "6": consulteEtatMempool(); break;
                     case "7": running = false; break;
-                    default: System.out.println("Invalid choice"); break;
+                    default: log.info("Invalid choice"); break;
                 }
             } catch (Exception e) {
-                System.out.println("Erreur: " + e.getMessage());
+               log.severe(e.getMessage());
             }
-            System.out.println();
+
         }
         scanner.close();
     }
@@ -56,11 +58,12 @@ public class MainMenu {
         Wallet bw = service.createWallet(type);
 
         if (bw != null) {
-            System.out.println("Ethereum Wallet Created!");
 
-            System.out.println("Balance: " + bw.getbalance());
+            log.fine("Ethereum Wallet Created!");
+
+            log.fine ("Balance: " + bw.getbalance());
         } else {
-            System.out.println("Error creating wallet.");
+           log.warning("Ethereum Wallet could not be created!");
         }
     }
 
@@ -69,11 +72,10 @@ public class MainMenu {
         Wallet bw = service.createWallet(type);
 
         if (bw != null) {
-            System.out.println("Bitcoin Wallet Created!");
-
+            log.fine("Bitcoin Wallet Created!");
             System.out.println("Balance: " + bw.getbalance());
         } else {
-            System.out.println("Error creating wallet.");
+           log.warning("Bitcoin Wallet could not be created!");
         }
     }
 
@@ -82,14 +84,14 @@ public class MainMenu {
         String senaddress = scanner.nextLine();
 
         if (!InputValidator.isValidAddress(senaddress)) {
-            System.out.println("Invalid address");
+            log.info("Invalid address");
             return;
         }
 
         System.out.println("Please enter the address of the receiver:");
         String resaddress = scanner.nextLine();
         if (!InputValidator.isValidAddress(resaddress)) {
-            System.out.println("Invalid address");
+            log.info("Invalid address");
             return;
         }
         System.out.println("Please enter the amount you want to send:");
@@ -107,11 +109,11 @@ public class MainMenu {
             case "1": type = "ECONOMICAL"; break;
             case "2": type = "STANDARD"; break;
             case "3": type = "FAST"; break;
-            default: System.out.println("Invalid choice");
+            default: log.info("Invalid choice");
         }
 
         System.out.println(service.doTransaction(resaddress, senaddress, amount, type));
-        System.out.println("Transaction sent successfully!");
+        log.fine("Transaction Successful!");
     }
 
     public static void positionInMempoo() {
@@ -120,7 +122,7 @@ public class MainMenu {
 
         int position = mempoolService.getPositionInMempool(transactionID);
         if (position == -1) {
-            System.out.println("Transaction not found in mempool.");
+           log.info("Transaction not found in mempool.");
         } else {
             System.out.println("Your position in the mempool is: " + position);
         }

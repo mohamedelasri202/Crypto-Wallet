@@ -7,9 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class WalletService {
     Connection connection;
     private final MempoolService mempoolService;
+    private final static Logger log = Logger.getLogger(WalletService.class.getName());
 
 
     public WalletService(MempoolService mempoolService) {
