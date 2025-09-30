@@ -1,8 +1,7 @@
 package Metie;
-import java.sql.Time;
+import Utilitaire.Priority;
+
 import java.time.LocalDateTime;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Transaction {
     private  String   transaction_id;
@@ -11,9 +10,10 @@ public class Transaction {
     private double amount;
     private double fees;
     private String status ;
+    private Priority priority;
     private LocalDateTime creation_date;
 
-    public Transaction(String transaction_id, String sender_address, String reseiver_address, double amount, double fees, String status) {
+    public Transaction(String transaction_id, String sender_address, String reseiver_address, double amount, double fees, String status, Priority priority) {
         this.transaction_id = transaction_id;
         this.sender_address = sender_address;
         this.reseiver_address = reseiver_address;
@@ -21,6 +21,7 @@ public class Transaction {
         this.fees = fees;
         this.status = status;
         this.creation_date = LocalDateTime.now();
+        this.priority = priority;
 
     }
 
@@ -76,8 +77,19 @@ public class Transaction {
         this.status = status;
     }
 
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
     public void setCreation_date(LocalDateTime creation_date) {
         this.creation_date = creation_date;
+    }
+    public String getTransactionById(String transaction_id) {
+        return transaction_id;
     }
 
 }

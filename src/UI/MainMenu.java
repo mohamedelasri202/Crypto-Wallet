@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Logger;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
 
 public class MainMenu {
     private static MempoolService mempoolService = new MempoolService();
@@ -16,6 +18,14 @@ public class MainMenu {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+
+
+        log.setLevel(Level.ALL);
+
+        // Add console handler and set its level
+        ConsoleHandler handler = new ConsoleHandler();
+        handler.setLevel(Level.ALL);
+        log.addHandler(handler);
         boolean running = true;
 
         while (running) {

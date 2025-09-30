@@ -36,7 +36,7 @@ public class Autoconfirmation {
                 String updateSQL = "UPDATE transactions SET status = 'CONFIRMED' WHERE transaction_id = ?";
                 try (PreparedStatement stmt = mempoolService.getConnection().prepareStatement(updateSQL)) {
                     stmt.setString(1, tx.getTransaction_id());
-
+                    stmt.executeUpdate();
                     int rows = stmt.executeUpdate();
                     logger.info("Updated transaction " + tx.getTransaction_id() + ". Rows affected: " + rows);
                 } catch (SQLException e) {

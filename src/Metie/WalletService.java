@@ -76,6 +76,15 @@ public class WalletService {
             return "error: wallet not found";
         }
 
+        // Convert user input to Priority enum
+        Priority priority;
+        try {
+            priority = Priority.valueOf(type.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return "error: invalid priority type";
+        }
+
+        // Calculate fees based on wallet type and priority
         String walletType = sender.getType();
         if (walletType.equals("ethereum")) {
             EthereumFees ethFees = new EthereumFees();
@@ -84,6 +93,7 @@ public class WalletService {
             BitcoinFees btcFees = new BitcoinFees();
             fee = btcFees.calulatefees(amount, type);
         }
+
         totalDebit = amount + fee;
 
         if (sender.getbalance() < totalDebit) {
@@ -96,8 +106,8 @@ public class WalletService {
             // Disable auto-commit for manual control
             connection.setAutoCommit(false);
 
-            // 2. Insert transaction into DB
-            String insertTransactionSQL = "INSERT INTO transactions (transaction_id, sender_address, receiver_address, amount, fees, status) VALUES (?, ?, ?, ?, ?, ?)";
+            // 1. Insert transaction into DB
+            String insertTransactionSQL = "INSERT INTO transactions (transaction_id, sender_address, receiver_address, amount, fees, status, priority) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement stmt = connection.prepareStatement(insertTransactionSQL)) {
                 stmt.setString(1, transactionId);
                 stmt.setString(2, senAddress);
@@ -105,11 +115,11 @@ public class WalletService {
                 stmt.setDouble(4, amount);
                 stmt.setDouble(5, fee);
                 stmt.setString(6, "PENDING");
+                stmt.setString(7, priority.name()); // store priority
                 stmt.executeUpdate();
             }
-            System.out.println(sender.getbalance());
 
-            // 3. Update sender balance
+            // 2. Update sender balance
             String updateSenderSQL = "UPDATE wallet SET amount = amount - ? WHERE address = ?";
             try (PreparedStatement stmt = connection.prepareStatement(updateSenderSQL)) {
                 stmt.setDouble(1, totalDebit);
@@ -117,30 +127,30 @@ public class WalletService {
                 stmt.executeUpdate();
             }
 
-            // 4. Update receiver balance
+            // 3. Update receiver balance
             String updateReceiverSQL = "UPDATE wallet SET amount = amount + ? WHERE address = ?";
             try (PreparedStatement stmt = connection.prepareStatement(updateReceiverSQL)) {
                 stmt.setDouble(1, amount);
                 stmt.setString(2, resAddress);
                 stmt.executeUpdate();
-
             }
+
             connection.commit();
             connection.setAutoCommit(true);
 
-
+            // 4. Create transaction object with priority
             Transaction tx = new Transaction(
                     transactionId,
                     senAddress,
                     resAddress,
                     amount,
                     fee,
-                    "PENDING"
+                    "PENDING",
+                    priority
             );
 
+            // 5. Add to mempool
             mempoolService.addTransaction(tx);
-            Autoconfirmation auto = new Autoconfirmation(mempoolService);
-            auto.autoConfirmTransaction(tx);
 
 
 
@@ -157,6 +167,7 @@ public class WalletService {
             return "error: transaction failed";
         }
     }
+
 
 
 
