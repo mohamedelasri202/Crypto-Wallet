@@ -180,19 +180,6 @@ public class MainMenu {
             System.out.printf("%-40s | %-15.8f%n", address, fees);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
     private static double readDouble() {
         while (true) {
             try {
