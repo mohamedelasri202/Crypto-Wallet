@@ -73,17 +73,15 @@ L’objectif est d’aider les utilisateurs à comprendre le rôle des frais dan
 ## 🖼️ Captures d’écran
 👉 Voici l’emplacement pour les captures d’écran. Tu peux ajouter plusieurs images, par exemple pour le menu principal, la création de wallet, la comparaison des fees, etc.
 
-### Exemple : Menu principal
-![Menu Principal](https://github.com/ton-utilisateur/crypto-wallet-simulator/blob/main/docs/menu.png)
 
 ### Exemple : Création de wallet
-![Création Wallet](https://github.com/ton-utilisateur/crypto-wallet-simulator/blob/main/docs/create-wallet.png)
+![Diagramme UML](https://raw.githubusercontent.com/mohamedelasri202/Crypto-Wallet/main/Screenshot 2025-09-30 204211.png)
 
 ### Exemple : Comparaison des frais
-![Comparaison Fees](https://github.com/ton-utilisateur/crypto-wallet-simulator/blob/main/docs/compare-fees.png)
+![Diagramme UML](https://raw.githubusercontent.com/mohamedelasri202/Crypto-Wallet/main/Screenshot 2025-09-30 204337.png)
 
 ### Exemple : État du mempool
-![État du mempool](https://github.com/ton-utilisateur/crypto-wallet-simulator/blob/main/docs/mempool.png)
+![Diagramme UML](https://raw.githubusercontent.com/mohamedelasri202/Crypto-Wallet/main/Screenshot 2025-09-30 204413.png)
 
 ---
 
@@ -93,17 +91,8 @@ L’objectif est d’aider les utilisateurs à comprendre le rôle des frais dan
 - PostgreSQL installé et configuré
 - Git
 
-### Installation
-```bash
-# Cloner le dépôt
-git clone https://github.com/ton-utilisateur/crypto-wallet-simulator.git
-cd crypto-wallet-simulator
 
-# Compiler les fichiers
-javac -d bin src/**/*.java
 
-# Exécuter l’application
-java -cp bin UI.MainMenu
 
 
 
