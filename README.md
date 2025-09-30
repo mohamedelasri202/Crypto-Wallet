@@ -64,7 +64,8 @@ L’objectif est d’aider les utilisateurs à comprendre le rôle des frais dan
 ## 📐 Diagramme UML
 👉 Voici l’emplacement du diagramme UML du projet. Remplace simplement le lien ci-dessous par le tien :
 
-![Diagramme UML](https://github.com/mohamedelasri202/Crypto-Wallet/Screenshot%202025-09-30%20204638.png)
+![Diagramme UML](https://raw.githubusercontent.com/mohamedelasri202/Crypto-Wallet/main/Screenshot%202025-09-30%20204638.png)
+
 
 
 ---
@@ -103,5 +104,6 @@ javac -d bin src/**/*.java
 
 # Exécuter l’application
 java -cp bin UI.MainMenu
+
 
 
