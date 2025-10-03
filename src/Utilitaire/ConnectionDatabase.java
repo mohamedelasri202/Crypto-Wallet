@@ -15,7 +15,8 @@ public class ConnectionDatabase {
         try {
 
             Properties props = new Properties();
-            FileInputStream fis = new FileInputStream("config.properties");
+            FileInputStream fis = new FileInputStream("src/config.properties");
+
             props.load(fis);
 
             String url = props.getProperty("DB_URL");
