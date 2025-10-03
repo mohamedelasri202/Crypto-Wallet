@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MempoolService {
      private  final Connection connection;
@@ -109,7 +110,14 @@ public class MempoolService {
         return this.connection;
     }
 
-  
+  public List <Transaction> test(){
+
+             return pendingtransactions.stream().filter(p->p.getFees()>0.5).collect(Collectors.toList());
+
+
+
+
+  }
 
 }
 

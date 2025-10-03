@@ -1,42 +1,45 @@
 package Utilitaire;
 
-import javax.xml.crypto.Data;
-import java.sql.*;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.IOException;
 
+public class ConnectionDatabase {
+    private static ConnectionDatabase instance;
+    private Connection connection;
 
-public class ConnectionDatabase{
-     private static ConnectionDatabase instance;
-     private Connection connection;
-
-     private final String url ="jdbc:postgresql://localhost:5432/cryptowallet";
-     private final String user = "postgres";
-     private final String password = "mohamed@1230";
-
-     private ConnectionDatabase(){
+    private ConnectionDatabase() {
         try {
-            connection =DriverManager.getConnection(url,user,password);
+
+            Properties props = new Properties();
+            FileInputStream fis = new FileInputStream("config.properties");
+            props.load(fis);
+
+            String url = props.getProperty("DB_URL");
+            String user = props.getProperty("DB_USER");
+            String password = props.getProperty("DB_PASSWORD");
+
+            connection = DriverManager.getConnection(url, user, password);
             System.out.println("Connected to database successfully");
 
-        }catch (SQLException e){
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
-
         }
-     }
-
-     public static ConnectionDatabase getInstance(){
-         if(instance == null){
-             instance = new ConnectionDatabase();
-         }
-         return instance;
-     }
-     public Connection getConnection(){
-         return connection;
-     }
+    }
 
 
+    public static ConnectionDatabase getInstance() {
+        if (instance == null) {
+            instance = new ConnectionDatabase();
+        }
+        return instance;
+    }
 
 
-
-
+    public Connection getConnection() {
+        return connection;
+    }
 }
